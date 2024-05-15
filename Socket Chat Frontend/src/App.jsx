@@ -7,22 +7,31 @@ function App({socket}) {
 
   useEffect(() => {
     //event listener for when client is connected to socket
-    socket.on("connect", () => {
+    const onConnect = () => {
       console.log(socket.id, 'connected');
-    });
-    //event listener for when client is disconnected
-    socket.on("disconnect", () => {
-      console.log(socket.id, 'disconnected');
-    });
-  }, [recievedMessages])
+    }
+    socket.on("connect", onConnect);
 
-  useEffect(() => {
+    //event listener for when client is disconnected
+    const onDisconnect = () => {
+      console.log(socket.id, 'disconnected');
+    }
+    socket.on("disconnect", onDisconnect);
+
     //event listener for when client recieves an event called 'message'
-    socket.on('message', text => {
-        console.log(text)
-        setRecievedMessages(text)
-    });
-  }, [socket])
+    const onMessage = (text) => {
+      console.log(text)
+      setRecievedMessages(text)
+    }
+    socket.on('message', onMessage)
+
+    //remove the event listeners when component is unloaded
+    return () => {
+      socket.off("connect", onConnect);
+      socket.off("disconnect", onDisconnect);
+      socket.off('message', onMessage)
+    }
+  }, [])
 
   //handling user input
   const handleInput = (e) => {
