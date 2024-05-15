@@ -6,6 +6,8 @@ function App({socket}) {
   const [recievedMessages, setRecievedMessages] = useState('write something')
 
   useEffect(() => {
+
+    
     //event listener for when client is connected to socket
     const onConnect = () => {
       console.log(socket.id, 'connected');
@@ -29,7 +31,7 @@ function App({socket}) {
     return () => {
       socket.off("connect", onConnect);
       socket.off("disconnect", onDisconnect);
-      socket.off('message', onMessage)
+      // socket.off('message', onMessage)
     }
   }, [])
 

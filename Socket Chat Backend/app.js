@@ -27,9 +27,11 @@ app.get('/', (req, res) => {
 io.on('connection', (socket) => {
     console.log(socket.id);
 
-    socket.on('message', (text) => {
-      console.log('message recieved:', text)
-      socket.broadcast.emit('message', `${socket.id} said ${text}` );
+  socket.on('message', (text) => {
+    console.log('message recieved:', text)
+    //io.emit sends to all, socket.broadcast.emit sends to everyone but the initial sender
+    io.emit('message', `${socket.id} said ${text}`);
+    // socket.broadcast.emit('message', `${socket.id} said ${text}`);
     })
   });
 
