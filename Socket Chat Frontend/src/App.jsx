@@ -1,24 +1,28 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css'
-import {io} from 'socket.io-client'
 
-function App() {
+function App({socket}) {
   const [userInput, setUserInput] = useState('')
-  const socket = io('localhost:3000')
+  const [recievedMessages, setRecievedMessages] = useState('write something')
 
-  //event listener for when client is connected to socket
-  socket.on("connect", () => {
-    console.log(socket.id, 'connected');
-  });
-  //event listener for when client is disconnected
-  socket.on("disconnect", () => {
-    console.log(socket.id, 'disconnected');
-  });
+  useEffect(() => {
+    //event listener for when client is connected to socket
+    socket.on("connect", () => {
+      console.log(socket.id, 'connected');
+    });
+    //event listener for when client is disconnected
+    socket.on("disconnect", () => {
+      console.log(socket.id, 'disconnected');
+    });
+  }, [recievedMessages])
 
-  //event listener for when client recieves an event called 'message'
-  socket.on('message', text => {
-      console.log(text)
-  });
+  useEffect(() => {
+    //event listener for when client recieves an event called 'message'
+    socket.on('message', text => {
+        console.log(text)
+        setRecievedMessages(text)
+    });
+  }, [socket])
 
   //handling user input
   const handleInput = (e) => {
@@ -27,12 +31,15 @@ function App() {
 
   //handling button click, send userInput
   const handleButtonClick = () => {
-    socket.send(userInput)
+    socket.emit('message', userInput )
     setUserInput('')
   }
 
   return (
     <>
+      <div>
+        {recievedMessages}
+      </div>
       <input onChange={handleInput} value={userInput}></input>
       <button onClick={handleButtonClick}>Send Message</button>
     </>

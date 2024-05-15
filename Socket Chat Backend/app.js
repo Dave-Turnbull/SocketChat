@@ -25,10 +25,11 @@ app.get('/', (req, res) => {
 
 //monitor socket and log when connection happens
 io.on('connection', (socket) => {
-    console.log('a user connected');
+    console.log(socket.id);
 
-    socket.on('message', () => {
-      console.log('message recieved')
+    socket.on('message', (text) => {
+      console.log('message recieved:', text)
+      socket.broadcast.emit('message', `${socket.id} said ${text}` );
     })
   });
 
