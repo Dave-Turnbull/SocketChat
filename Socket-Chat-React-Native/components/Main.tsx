@@ -14,6 +14,7 @@ import {
   TextInputChangeEventData,
 } from 'react-native';
 import {Socket} from 'socket.io-client';
+import { user } from '../config.js'
 
 type MainProps = {
   socket: Socket;
@@ -51,9 +52,12 @@ export const Main = ({socket}: MainProps) => {
     };
   }, [socket]);
 
+
+  
   //handling button click, send userInput
   const handleButtonClick = () => {
-    socket.emit('message', userInput);
+    user.text = userInput
+    socket.emit('message', user);
     setUserInput('');
   };
 
