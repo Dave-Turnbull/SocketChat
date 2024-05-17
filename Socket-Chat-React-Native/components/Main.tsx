@@ -23,17 +23,20 @@ type MainProps = {
 export const Main = ({socket}: MainProps) => {
   const [userInput, setUserInput] = useState<string>('');
   const [recievedMessages, setRecievedMessages] = useState('write something');
+  const [isConnected, setIsConnected] = useState(false)
 
   useEffect(() => {
     //event listener for when client is connected to socket
     const onConnect = () => {
       console.log(socket.id, 'connected');
+      setIsConnected(true)
     };
     socket.on('connect', onConnect);
 
     //event listener for when client is disconnected
     const onDisconnect = () => {
       console.log(socket.id, 'disconnected');
+      setIsConnected(false)
     };
     socket.on('disconnect', onDisconnect);
 
@@ -81,6 +84,7 @@ export const Main = ({socket}: MainProps) => {
         </Text>
       <TextInput onChange={onChange} value={userInput}></TextInput>
       <Button title="Button send" onPress={handleButtonClick} />
+      {isConnected && <Text>Connected</Text>}
       </View>
     </>
   );

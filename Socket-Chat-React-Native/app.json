@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Socket-Chat-RNative",
-    "slug": "Socket-Chat-RNative",
+    "name": "Socket-Chat-React-Native",
+    "slug": "Socket-Chat-React-Native",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
