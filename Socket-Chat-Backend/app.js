@@ -32,8 +32,13 @@ io.on('connection', (socket) => {
     //io.emit sends to all, socket.broadcast.emit sends to everyone but the initial sender
     io.emit('message', `${user.name} said ${user.text}`);
     // socket.broadcast.emit('message', `${socket.id} said ${text}`);
-    })
-  });
+  })
+
+  socket.on('timerStart', (user) => {
+    console.log('Timer started by', user.name)
+    io.emit('timerStart', `${user.name} has started the timer`);
+  })
+});
 
 //start server on port 3000
 server.listen(3000, () => {
